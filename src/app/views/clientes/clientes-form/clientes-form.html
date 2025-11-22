@@ -1,14 +1,21 @@
-<div class="form-container">
-  <h2>{{ isEditando() ? 'Editar Cliente' : 'Novo Cliente' }}</h2>
+<div class="form-container" [attr.data-mode]="isEditando() ? 'edit' : 'new'">
+  <div class="form-header">
+    <h2 class="form-title">{{ isEditando() ? 'Editar Cliente' : 'Novo Cliente' }}</h2>
+    <p class="form=subtitle">{{ isEditando() ? 'Atualize as informações do cliente' : 'Cadastre um novo cliente no sistema' }}</p>
+  </div>
   
-  <a routerLink="/clientes" class="back-link"> Voltar para a Lista de Clientes</a><br>
+  
 
+  <nav class="back-link-container">
+    <a routerLink="/clientes" class="back-link">Voltar para a Lista de Clientes</a>
+  </nav>
+  
 
-  <form (ngSubmit)="salvarCliente()" #clienteForm="ngForm">
+  <form (ngSubmit)="salvarCliente()" #clienteForm="ngForm" class="client-form">
     
     <!-- Campo Nome -->
     <div class="form-group">
-      <label for="nome">Nome:</label>
+      <label for="nome" class="form-label">Nome:</label>
       <input 
         type="text" 
         id="nome" 
@@ -34,7 +41,7 @@
 
     <!-- Campo Email -->
     <div class="form-group">
-      <label for="email">Email:</label>
+      <label for="email" class="form-label">Email:</label>
       <input 
         type="email" 
         id="email" 
@@ -59,8 +66,8 @@
     </div>
 
     <!-- Campo Telefone -->
-    <div class="form-group">
-      <label for="telefone">Telefone:</label>
+    <div class="form-group" class="form-label">
+      <label for="telefone" class="form-label">Telefone:</label>
       <input 
         type="tel" 
         id="telefone" 
@@ -85,7 +92,7 @@
     </div>
 
     <!-- Campo Endereço -->
-    <div class="form-group">
+    <div class="form-group" class="form-label">
       <label for="endereco">Endereço:</label>
       <textarea 
         id="endereco" 
@@ -96,7 +103,7 @@
         minlength="5"
         class="form-control"
         placeholder="Digite o endereço completo"
-        rows="3"></textarea>
+        rows="1"></textarea>
       
       @if (clienteForm.controls['endereco']?.invalid && clienteForm.controls['endereco']?.touched) {
         <div class="error-message">

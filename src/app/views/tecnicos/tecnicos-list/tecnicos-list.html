@@ -1,10 +1,8 @@
-<p>tecnicos-list works!</p>
-
-<h1>Lista de Técnicos</h1>
+<h1 class="tecnicos-tittle">Lista de Técnicos</h1>
 
 <div class="tecnicos-container">
    <div class="actions">
-     <button routerLink="/tecnicos/novo" class="btn">Novo Técnico</button>
+     <button routerLink="/tecnicos/novo" class="btn btn-primary">Novo Técnico</button>
    </div>
 
     @if (tecnicos(); as tecnicosList) {
@@ -34,11 +32,11 @@
                     <td>{{ tecnico.email }}</td>
                     <td>{{ tecnico.telefone}}</td>
                     <td>{{ tecnico.especialidade}}</td>
-                    <td>{{ tecnico.disponivel }}</td>
+                    <td>{{ tecnico.disponivel ? "Disponível" : "Indisponível"}}</td>
                     <td>{{ tecnico.dataContratacao | date: "dd/MM/yyyy" }}</td>
                     <td class="actions">
-                        <button [routerLink]="['/tecnicos/editar', tecnico.id]" class="btn">Editar</button>
-                        <button (click)="excluirTecnico(tecnico.id)" class="btn">Excluir</button>
+                        <button [routerLink]="['/tecnicos/editar', tecnico.id]" class="btn btn-edit">Editar</button>
+                        <button (click)="excluirTecnico(tecnico.id)" class="btn btn-delete">Excluir</button>
                     </td>
                 </tr>
                 }
