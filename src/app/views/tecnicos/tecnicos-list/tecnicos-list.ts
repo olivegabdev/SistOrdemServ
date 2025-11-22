@@ -6,6 +6,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-tecnicos-list',
+  standalone: true,
   imports: [DatePipe, RouterModule, CommonModule, RouterLink],
   templateUrl: './tecnicos-list.html',
   styleUrl: './tecnicos-list.css',

@@ -19,11 +19,6 @@ export const routes: Routes = [
         component: ClientesFormComponent
     },
     {
-        path: '',
-        redirectTo: 'clientes',
-        pathMatch: 'full'
-    },
-    {
         path: 'tecnicos',
         component: TecnicosList
     },
@@ -37,6 +32,7 @@ export const routes: Routes = [
     },
     {
         path: '**',
-        redirectTo: 'clientes'
+        redirectTo: 'clientes',
+        pathMatch: 'full'
     }
 ];
