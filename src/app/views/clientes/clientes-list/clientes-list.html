@@ -1,0 +1,47 @@
+<p>clientes-list works!</p>
+
+    <h1>Lista de Clientes</h1>
+
+    <div class="clientes-container">
+        <div class="actions">
+            <button routerLink="/clientes/novo" class="btn"> Novo Cliente</button>
+        </div>
+
+        @if (clientes(); as clientesList) {
+            @if (clientesList.length === 0) {
+                <div class="no data">
+                    <p>nenhum cliente cadastrado</p>
+                </div>
+            } @else {
+                <table class = "clientes-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nome</th>
+                        <th>Email</th>
+                        <th>Telefone</th>
+                        <th>Data Cadastro</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (cliente of clientesList; track cliente.id) {
+                        <tr>
+                        <td>{{ cliente.id }}</td>
+                        <td>{{ cliente.nome }}</td>
+                        <td>{{ cliente.email }}</td>
+                        <td>{{ cliente.telefone}}</td>
+                        <td>{{ cliente.dataCadastro | date: "dd/MM/yyyy" }}</td>
+                        <td class="actions">
+                            <button [routerLink]="['/clientes/editar', cliente.id]" class="btn">Editar</button>
+                            <button (click)="excluirCliente(cliente.id)" class="btn">Excluir</button>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+            </table>
+            }
+        } @else {
+             <div class="loading">Carregando clientes...</div>
+        }
+    </div>

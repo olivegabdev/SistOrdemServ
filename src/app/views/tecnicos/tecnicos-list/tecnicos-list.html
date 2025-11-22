@@ -1,0 +1,52 @@
+<p>tecnicos-list works!</p>
+
+<h1>Lista de Técnicos</h1>
+
+<div class="tecnicos-container">
+   <div class="actions">
+     <button routerLink="/tecnicos/novo" class="btn">Novo Técnico</button>
+   </div>
+
+    @if (tecnicos(); as tecnicosList) {
+        @if (tecnicosList.length === 0) {
+            <div class="no data">
+                <p>nenhum técnico cadastrado</p>
+            </div>
+        } @else {
+            <table class = "tecnicos-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Especialidade</th>
+                    <th>Disponibilidade</th>
+                    <th>Data Contratação</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (tecnico of tecnicosList; track tecnico.id) {
+                    <tr>
+                    <td>{{ tecnico.id }}</td>
+                    <td>{{ tecnico.nome }}</td>
+                    <td>{{ tecnico.email }}</td>
+                    <td>{{ tecnico.telefone}}</td>
+                    <td>{{ tecnico.especialidade}}</td>
+                    <td>{{ tecnico.disponivel }}</td>
+                    <td>{{ tecnico.dataContratacao | date: "dd/MM/yyyy" }}</td>
+                    <td class="actions">
+                        <button [routerLink]="['/tecnicos/editar', tecnico.id]" class="btn">Editar</button>
+                        <button (click)="excluirTecnico(tecnico.id)" class="btn">Excluir</button>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        }
+    } @else {
+         <div class="loading">Carregando técnicos...</div>
+    }
+
+</div>

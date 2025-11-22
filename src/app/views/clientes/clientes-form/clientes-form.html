@@ -1,0 +1,143 @@
+<div class="form-container">
+  <h2>{{ isEditando() ? 'Editar Cliente' : 'Novo Cliente' }}</h2>
+  
+  <a routerLink="/clientes" class="back-link"> Voltar para a Lista de Clientes</a><br>
+
+
+  <form (ngSubmit)="salvarCliente()" #clienteForm="ngForm">
+    
+    <!-- Campo Nome -->
+    <div class="form-group">
+      <label for="nome">Nome:</label>
+      <input 
+        type="text" 
+        id="nome" 
+        [ngModel]="cliente.nome"
+        (ngModelChange)="atualizarNome($event)"
+        name="nome" 
+        required
+        minlength="2"
+        class="form-control"
+        placeholder="Digite o nome completo do cliente">
+      
+      @if (clienteForm.controls['nome']?.invalid && clienteForm.controls['nome']?.touched) {
+        <div class="error-message">
+          @if (clienteForm.controls['nome']?.errors?.['required']) {
+            <span>Nome é obrigatório</span>
+          }
+          @if (clienteForm.controls['nome']?.errors?.['minlength']) {
+            <span>Nome deve ter pelo menos 2 caracteres</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Email -->
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input 
+        type="email" 
+        id="email" 
+        [ngModel]="cliente.email"
+        (ngModelChange)="atualizarEmail($event)"
+        name="email" 
+        required
+        email
+        class="form-control"
+        placeholder="exemplo@email.com">
+      
+      @if (clienteForm.controls['email']?.invalid && clienteForm.controls['email']?.touched) {
+        <div class="error-message">
+          @if (clienteForm.controls['email']?.errors?.['required']) {
+            <span>Email é obrigatório</span>
+          }
+          @if (clienteForm.controls['email']?.errors?.['email']) {
+            <span>Digite um email válido</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Telefone -->
+    <div class="form-group">
+      <label for="telefone">Telefone:</label>
+      <input 
+        type="tel" 
+        id="telefone" 
+        [ngModel]="cliente.telefone"
+        (ngModelChange)="atualizarTelefone($event)"
+        name="telefone" 
+        required
+        pattern="[0-9()\\-\\s]+"
+        class="form-control"
+        placeholder="(11) 99999-9999">
+      
+      @if (clienteForm.controls['telefone']?.invalid && clienteForm.controls['telefone']?.touched) {
+        <div class="error-message">
+          @if (clienteForm.controls['telefone']?.errors?.['required']) {
+            <span>Telefone é obrigatório</span>
+          }
+          @if (clienteForm.controls['telefone']?.errors?.['pattern']) {
+            <span>Digite um telefone válido</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Campo Endereço -->
+    <div class="form-group">
+      <label for="endereco">Endereço:</label>
+      <textarea 
+        id="endereco" 
+        [ngModel]="cliente.endereco"
+        (ngModelChange)="atualizarEndereco($event)"
+        name="endereco" 
+        required
+        minlength="5"
+        class="form-control"
+        placeholder="Digite o endereço completo"
+        rows="3"></textarea>
+      
+      @if (clienteForm.controls['endereco']?.invalid && clienteForm.controls['endereco']?.touched) {
+        <div class="error-message">
+          @if (clienteForm.controls['endereco']?.errors?.['required']) {
+            <span>Endereço é obrigatório</span>
+          }
+          @if (clienteForm.controls['endereco']?.errors?.['minlength']) {
+            <span>Endereço deve ter pelo menos 5 caracteres</span>
+          }
+        </div>
+      }
+    </div>
+
+    <!-- Informações de Read-only para Edição -->
+    @if (isEditando()) {
+      <div class="readonly-info">
+        <div class="info-item">
+          <strong>ID:</strong> {{ cliente.id }}
+        </div>
+        <div class="info-item">
+          <strong>Data de Cadastro:</strong> {{ cliente.dataCadastro | date:'dd/MM/yyyy HH:mm' }}
+        </div>
+      </div>
+    }
+
+    <!-- Ações do Formulário -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="clienteForm.invalid">
+        💾 {{ isEditando() ? 'Atualizar Cliente' : 'Cadastrar Cliente' }}
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="router.navigate(['/clientes'])">
+        ❌ Cancelar
+      </button>
+    </div>
+
+  </form>
+</div>
