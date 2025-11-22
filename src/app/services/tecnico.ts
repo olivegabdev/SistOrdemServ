@@ -9,7 +9,7 @@ export class TecnicoService {
   private tecnicosSignal = signal<Tecnico[]>([
 
     { id: 1, nome: 'Carlos Eduardo', 
-      email: 'carlos.eduardo@gmail.com',
+      email: 'carlos.eduardo@email.com',
       telefone: '(85) 91234-5678',
       especialidade: 'Eletrônica',
       disponivel: true,
@@ -17,7 +17,7 @@ export class TecnicoService {
     },
     {
       id: 2, nome: 'Ana Paula', 
-      email: '',
+      email: 'ana.paula@email.com',
       telefone: '(85) 99876-5432',
       especialidade: 'Mecânica',
       disponivel: false,
@@ -25,7 +25,7 @@ export class TecnicoService {
     },
     {
       id: 3, nome: 'Rafael Silva',
-      email: '',
+      email: 'rafael.silva@email.com',
       telefone: '(85) 93456-7890',
       especialidade: 'Informática',
       disponivel: true,

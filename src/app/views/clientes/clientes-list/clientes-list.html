@@ -1,10 +1,8 @@
-<p>clientes-list works!</p>
-
-    <h1>Lista de Clientes</h1>
+<h1 class="clientes-title">Lista de Clientes</h1>
 
     <div class="clientes-container">
         <div class="actions">
-            <button routerLink="/clientes/novo" class="btn"> Novo Cliente</button>
+            <button routerLink="/clientes/novo" class="btn btn-primary"> Novo Cliente</button>
         </div>
 
         @if (clientes(); as clientesList) {
@@ -20,6 +18,7 @@
                         <th>Nome</th>
                         <th>Email</th>
                         <th>Telefone</th>
+                        <th>Endereço</th>
                         <th>Data Cadastro</th>
                         <th>Ações</th>
                     </tr>
@@ -31,10 +30,11 @@
                         <td>{{ cliente.nome }}</td>
                         <td>{{ cliente.email }}</td>
                         <td>{{ cliente.telefone}}</td>
+                        <td>{{ cliente.endereco}}</td>
                         <td>{{ cliente.dataCadastro | date: "dd/MM/yyyy" }}</td>
                         <td class="actions">
-                            <button [routerLink]="['/clientes/editar', cliente.id]" class="btn">Editar</button>
-                            <button (click)="excluirCliente(cliente.id)" class="btn">Excluir</button>
+                            <button [routerLink]="['/clientes/editar', cliente.id]" class="btn btn-edit">Editar</button>
+                            <button (click)="excluirCliente(cliente.id)" class="btn btn-delete">Excluir</button>
                         </td>
                     </tr>
                     }
