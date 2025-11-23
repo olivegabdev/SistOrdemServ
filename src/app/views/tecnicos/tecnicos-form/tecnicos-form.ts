@@ -23,13 +23,15 @@ export class TecnicosForm {
     dataContratacao: new Date()
   };
 
-  isEditando = signal(false);
+   isEditando = signal(false);
+   showAlert = signal(false);
+   alertMessage = signal('');
+   alertType = signal('success');
+ 
+   private tecnicoService = inject(TecnicoService);
+   private router = inject(Router);
+   private route = inject(ActivatedRoute);
 
-  constructor(
-    private tecnicoService: TecnicoService,
-    public router: Router,
-    private route: ActivatedRoute
-  ) {}
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -66,12 +68,40 @@ atualizarEspecialidade(especialidade: string): void {
 }
 
   salvarTecnico(): void {
-    if (this.isEditando()) {
-      this.tecnicoService.updateTecnico(this.tecnico);
-    } else {
-      const { nome, email, telefone, especialidade, disponivel } = this.tecnico;
-      this.tecnicoService.addTecnico({ nome, email, telefone, especialidade, disponivel });
+    try {
+        if (this.isEditando()) {
+        this.tecnicoService.updateTecnico(this.tecnico);
+      } else {
+        const { nome, email, telefone, especialidade, disponivel } = this.tecnico;
+        this.tecnicoService.addTecnico({ nome, email, telefone, especialidade, disponivel });
+        this.mostrarAlert('tecnico cadastrado com sucesso!', 'success');
+      }
+
+      setTimeout(() => {
+          this.router.navigate(['/tecnicos']);
+        }, 2500);
+
+    } catch (error) {
+       this.mostrarAlert('Erro ao salvar o tecnico. Tente novamente.', 'error');
     }
+  }
+
+  private mostrarAlert(message: string, type: 'success' | 'error' | 'warning'): void {
+    this.alertMessage.set(message);
+    this.alertType.set(type);
+    this.showAlert.set(true);
+
+    setTimeout(() => {
+      this.showAlert.set(false);
+    }, 5000);
+  }
+
+  fecharAlert(): void {
+    this.showAlert.set(false);
+  }
+
+  cancelar(): void {
+    this.router.navigate(['/tecnicos']);
   }
 
 }
