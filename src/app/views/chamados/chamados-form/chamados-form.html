@@ -1,0 +1,285 @@
+<div class="form-container" [attr.data-mode]="isEditando() ? 'edit' : 'new'">
+  <!-- CABEÇALHO -->
+  <div class="form-header">
+    <h1 class="form-title">
+      {{ isEditando() ? '✏️ Editar Chamado' : '➕ Novo Chamado' }}
+    </h1>
+    <p class="form-subtitle">
+      {{ isEditando() ? 'Atualize as informações do chamado' : 'Crie um novo chamado no sistema' }}
+    </p>
+  </div>
+
+  <!-- ALERTA -->
+  @if (showAlert()) {
+    <div class="alert alert-{{alertType()}} alert-dismissible">
+      <div class="alert-content">
+        <span class="alert-icon">
+          @if (alertType() === 'success') { ✅ }
+          @if (alertType() === 'error') { ❌ }
+        </span>
+        <span class="alert-message">{{ alertMessage() }}</span>
+      </div>
+      <button type="button" class="alert-close" (click)="fecharAlert()">×</button>
+    </div>
+  }
+
+  <form (ngSubmit)="salvarChamado()" #chamadoForm="ngForm" class="chamado-form">
+    
+    <!-- SEÇÃO: INFORMAÇÕES BÁSICAS -->
+    <div class="form-section">
+      <h3 class="section-title">📋 Informações do Chamado</h3>
+      
+      <!-- TÍTULO -->
+      <div class="form-group">
+        <label for="titulo" class="form-label required">Título do Chamado</label>
+        <input 
+          type="text" 
+          id="titulo" 
+          [ngModel]="chamado().titulo"
+          (ngModelChange)="atualizarTitulo($event)"
+          name="titulo" 
+          required
+          minlength="5"
+          maxlength="100"
+          class="form-control"
+          placeholder="Ex: Problema com internet no setor administrativo">
+        
+        @if (chamadoForm.controls['titulo']?.invalid && chamadoForm.controls['titulo']?.touched) {
+          <div class="error-message">
+            @if (chamadoForm.controls['titulo']?.errors?.['required']) {
+              <span>Título é obrigatório</span>
+            }
+            @if (chamadoForm.controls['titulo']?.errors?.['minlength']) {
+              <span>Título deve ter pelo menos 5 caracteres</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- DESCRIÇÃO -->
+      <div class="form-group">
+        <label for="descricao" class="form-label required">Descrição Detalhada</label>
+        <textarea 
+          id="descricao" 
+          [ngModel]="chamado().descricao"
+          (ngModelChange)="atualizarDescricao($event)"
+          name="descricao" 
+          required
+          minlength="10"
+          rows="5"
+          class="form-control"
+          placeholder="Descreva detalhadamente o problema ou solicitação..."></textarea>
+        
+        @if (chamadoForm.controls['descricao']?.invalid && chamadoForm.controls['descricao']?.touched) {
+          <div class="error-message">
+            @if (chamadoForm.controls['descricao']?.errors?.['required']) {
+              <span>Descrição é obrigatória</span>
+            }
+            @if (chamadoForm.controls['descricao']?.errors?.['minlength']) {
+              <span>Descrição deve ter pelo menos 10 caracteres</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- PRIORIDADE -->
+      <div class="form-group">
+        <label for="prioridade" class="form-label required">Prioridade</label>
+        <select 
+          id="prioridade"
+          [ngModel]="chamado().prioridade"
+          (ngModelChange)="atualizarPrioridade($event)"
+          name="prioridade"
+          required
+          class="form-control">
+          <option value="BAIXA">🟢 Baixa</option>
+          <option value="MEDIA">🟡 Média</option>
+          <option value="ALTA">🔴 Alta</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: ATENDIMENTO -->
+    <div class="form-section">
+      <h3 class="section-title">👥 Atendimento</h3>
+      
+      <div class="form-row">
+        <!-- CLIENTE -->
+        <div class="form-group">
+          <label for="clienteId" class="form-label required">Cliente</label>
+          <select 
+            id="clienteId"
+            [ngModel]="chamado().clienteId"
+            (ngModelChange)="atualizarClienteId($event)"
+            name="clienteId"
+            required
+            class="form-control">
+            @for (cliente of clientes(); track cliente.id) {
+              <option [value]="cliente.id">
+                {{ cliente.nome }} - {{ cliente.email }}
+              </option>
+            }
+          </select>
+          
+          @if (chamadoForm.controls['clienteId']?.invalid && chamadoForm.controls['clienteId']?.touched) {
+            <div class="error-message">
+              <span>Selecione um cliente</span>
+            </div>
+          }
+        </div>
+
+        <!-- TÉCNICO -->
+        <div class="form-group">
+          <label for="tecnicoId" class="form-label">Técnico Responsável</label>
+          <select 
+            id="tecnicoId"
+            [ngModel]="chamado().tecnicoId"
+            (ngModelChange)="atualizarTecnicoId($event)"
+            name="tecnicoId"
+            class="form-control">
+            <option value="">Não atribuído</option>
+            
+            <!-- Técnicos disponíveis -->
+            @if (tecnicosDisponiveis().length > 0) {
+              <optgroup label="🟢 Disponíveis">
+                @for (tecnico of tecnicosDisponiveis(); track tecnico.id) {
+                  <option [value]="tecnico.id">
+                    {{ tecnico.nome }} - {{ tecnico.especialidade }}
+                  </option>
+                }
+              </optgroup>
+            }
+            
+            <!-- Técnicos ocupados -->
+            <optgroup label="🔴 Ocupados">
+              <option *ngFor="let tecnico of todosTecnicos()" [value]="tecnico.id" disabled [hidden]="tecnico.disponivel">
+                {{ tecnico.nome }} - {{ tecnico.especialidade }} (Ocupado)
+              </option>
+            </optgroup>
+          </select>
+          
+        </div>
+      </div>
+    </div>
+
+    <!-- SEÇÃO: STATUS (APENAS EDIÇÃO) -->
+    @if (isEditando()) {
+      <div class="form-section">
+        <h3 class="section-title">🔄 Status do Chamado</h3>
+        
+        <div class="form-group">
+          <label for="status" class="form-label">Status Atual</label>
+          <div class="status-options">
+            <label class="radio-option">
+              <input 
+                type="radio" 
+                name="status" 
+                [value]="'ABERTO'"
+                [checked]="chamado().status === 'ABERTO'"
+                (change)="atualizarStatus('ABERTO')">
+              <span class="radio-label status-aberto">🔴 Aberto</span>
+            </label>
+            
+            <label class="radio-option">
+              <input 
+                type="radio" 
+                name="status" 
+                [value]="'EM_ANDAMENTO'"
+                [checked]="chamado().status === 'EM_ANDAMENTO'"
+                (change)="atualizarStatus('EM_ANDAMENTO')">
+              <span class="radio-label status-andamento">🟡 Em Andamento</span>
+            </label>
+            
+            <label class="radio-option">
+              <input 
+                type="radio" 
+                name="status" 
+                [value]="'FECHADO'"
+                [checked]="chamado().status === 'FECHADO'"
+                (change)="atualizarStatus('FECHADO')">
+              <span class="radio-label status-fechado">🟢 Fechado</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Ações rápidas de status -->
+        <div class="quick-actions">
+          @if (chamado().status !== 'FECHADO') {
+            <button type="button" class="btn btn-sm btn-success" (click)="fecharChamado()">
+              ✅ Fechar Chamado
+            </button>
+          }
+          
+          @if (chamado().status === 'FECHADO') {
+            <button type="button" class="btn btn-sm btn-warning" (click)="reabrirChamado()">
+              🔄 Reabrir Chamado
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- INFORMAÇÕES DO SISTEMA (APENAS EDIÇÃO) -->
+    @if (isEditando()) {
+      <div class="readonly-info">
+        <h4 class="section-title">📊 Informações do Sistema</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="info-label">ID do Chamado</span>
+            <span class="info-value">#{{ chamado().id }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Data de Abertura</span>
+            <span class="info-value">{{ chamado().dataAbertura | date:'dd/MM/yyyy HH:mm' }}</span>
+          </div>
+          @if (chamado().dataFechamento) {
+            <div class="info-item">
+              <span class="info-label">Data de Fechamento</span>
+              <span class="info-value">{{ chamado().dataFechamento | date:'dd/MM/yyyy HH:mm' }}</span>
+            </div>
+          }
+          @if (clienteSelecionado()) {
+            <div class="info-item">
+              <span class="info-label">Cliente Selecionado</span>
+              <span class="info-value">{{ clienteSelecionado()!.nome }}</span>
+            </div>
+          }
+          @if (tecnicoSelecionado()) {
+            <div class="info-item">
+              <span class="info-label">Técnico Atribuído</span>
+              <span class="info-value">{{ tecnicoSelecionado()!.nome }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+
+    <!-- AÇÕES DO FORMULÁRIO -->
+    <div class="form-actions">
+      <button 
+        type="submit" 
+        class="btn btn-primary"
+        [disabled]="!isFormularioValido()">
+        💾 {{ isEditando() ? 'Atualizar Chamado' : 'Criar Chamado' }}
+      </button>
+      
+      <button 
+        type="button" 
+        class="btn btn-secondary" 
+        (click)="cancelar()">
+        ❌ Cancelar
+      </button>
+
+      <!-- Ação adicional: Limpar formulário -->
+      @if (!isEditando()) {
+        <button 
+          type="button" 
+          class="btn btn-outline" 
+          (click)="chamadoForm.reset()">
+          🧹 Limpar
+        </button>
+      }
+    </div>
+
+  </form>
+</div>

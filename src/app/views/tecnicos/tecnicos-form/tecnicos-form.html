@@ -1,145 +1,157 @@
-<p>tecnicos-form works!</p>
+<div class="form-container" [attr.data-mode] = "isEditando() ? 'edit' : 'new'">
+  <div class="form-header">
+    <h2 class="form-title">{{ isEditando() ? 'Editar Técnico' : 'Novo Técnico' }}</h2>
+    <p class="form-subtitle">{{ isEditando() ? 'Atualize as informações do técnico' : 'Cadastre um novo técnico no sistema' }}</p>
+  </div>
 
-<div class="form-container">
-  <h2>{{ isEditando() ? 'Editar Técnico' : 'Novo Técnico' }}</h2>
-  
-  <a routerLink="/tecnicos" class="back-link"> Voltar para a Lista de Técnicos</a><br>
+  <nav class="back-link-container">
+    <a routerLink="/tecnicos" class="back-link"> Voltar para a Lista de Técnicos</a>
+  </nav>
 
-
-  <form (ngSubmit)="salvarTecnico()" #tecnicosForm="ngForm">
-    
-    <!-- Campo Nome -->
-    <div class="form-group">
-      <label for="nome">Nome:</label>
-      <input 
-        type="text" 
-        id="nome" 
-        [ngModel]="tecnico.nome"
-        (ngModelChange)="atualizarNome($event)"
-        name="nome" 
-        required
-        minlength="2"
-        class="form-control"
-        placeholder="Digite o nome completo do tecnicos">
-      
-      @if (tecnicosForm.controls['nome']?.invalid && tecnicosForm.controls['nome']?.touched) {
-        <div class="error-message">
-          @if (tecnicosForm.controls['nome']?.errors?.['required']) {
-            <span>Nome é obrigatório</span>
-          }
-          @if (tecnicosForm.controls['nome']?.errors?.['minlength']) {
-            <span>Nome deve ter pelo menos 2 caracteres</span>
-          }
-        </div>
-      }
-    </div>
-
-    <!-- Campo Email -->
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input 
-        type="email" 
-        id="email" 
-        [ngModel]="tecnico.email"
-        (ngModelChange)="atualizarEmail($event)"
-        name="email" 
-        required
-        email
-        class="form-control"
-        placeholder="exemplo@email.com">
-      
-      @if (tecnicosForm.controls['email']?.invalid && tecnicosForm.controls['email']?.touched) {
-        <div class="error-message">
-          @if (tecnicosForm.controls['email']?.errors?.['required']) {
-            <span>Email é obrigatório</span>
-          }
-          @if (tecnicosForm.controls['email']?.errors?.['email']) {
-            <span>Digite um email válido</span>
-          }
-        </div>
-      }
-    </div>
-
-    <!-- Campo Telefone -->
-    <div class="form-group">
-      <label for="telefone">Telefone:</label>
-      <input 
-        type="tel" 
-        id="telefone" 
-        [ngModel]="tecnico.telefone"
-        (ngModelChange)="atualizarTelefone($event)"
-        name="telefone" 
-        required
-        pattern="[0-9()\\-\\s]+"
-        class="form-control"
-        placeholder="11999999999">
-      
-      @if (tecnicosForm.controls['telefone']?.invalid && tecnicosForm.controls['telefone']?.touched) {
-        <div class="error-message">
-          @if (tecnicosForm.controls['telefone']?.errors?.['required']) {
-            <span>Telefone é obrigatório</span>
-          }
-          @if (tecnicosForm.controls['telefone']?.errors?.['pattern']) {
-            <span>Digite um telefone válido</span>
-          }
-        </div>
-      }
-    </div>
-
-    <!-- Campo Especialidade -->
-    <div class="form-group">
-      <label for="especialidade">Especialidade:</label>
-      <textarea 
-        id="especialidade" 
-        [ngModel]="tecnico.especialidade"
-        (ngModelChange)="atualizarEspecialidade($event)"
-        name="especialidade" 
-        required
-        minlength="3"
-        class="form-control"
-        placeholder="Digite a especialidade completa!"
-        rows="2"></textarea>
-      
-      @if (tecnicosForm.controls['especialidade']?.invalid && tecnicosForm.controls['especialidade']?.touched) {
-        <div class="error-message">
-          @if (tecnicosForm.controls['especialidade']?.errors?.['required']) {
-            <span>Especialidade é obrigatória!</span>
-          }
-          @if (tecnicosForm.controls['especialidade']?.errors?.['minlength']) {
-            <span>Especialidade deve ter pelo menos 3 caracteres</span>
-          }
-        </div>
-      }
-    </div>
-
-    <!-- Informações de Read-only para Edição -->
-    @if (isEditando()) {
-      <div class="readonly-info">
-        <div class="info-item">
-          <strong>ID:</strong> {{ tecnico.id }}
-        </div>
-        <div class="info-item">
-          <strong>Data de Contratação:</strong> {{ tecnico.dataContratacao | date:'dd/MM/yyyy HH:mm' }}
-        </div>
+   @if (showAlert()) {
+    <div class="alert alert-{{alertType()}} alert-dismissible">
+      <div class="alert-content">
+        <span class="alert-message">{{ alertMessage() }}</span>
       </div>
-    }
-
-    <!-- Ações do Formulário -->
-    <div class="form-actions">
-      <button 
-        type="submit" 
-        class="btn btn-primary"
-        [disabled]="tecnicosForm.invalid">
-        💾 {{ isEditando() ? 'Atualizar técnico' : 'Cadastrar técnico' }}
-      </button>
-      
-      <button 
-        type="button" 
-        class="btn btn-secondary" 
-        (click)="router.navigate(['/tecnicos'])">
-        ❌ Cancelar
-      </button>
+      <button type="button" class="alert-close" (click)="fecharAlert()">x</button>
     </div>
+  }
+    
+    <form (ngSubmit)="salvarTecnico()" #tecnicosForm="ngForm" class="tecnicos-form">
+      
+      <!-- Campo Nome -->
+      <div class="form-group">
+        <label for="nome" class="form-label">Nome:</label>
+        <input 
+          type="text" 
+          id="nome" 
+          [ngModel]="tecnico.nome"
+          (ngModelChange)="atualizarNome($event)"
+          name="nome" 
+          required
+          minlength="2"
+          class="form-control"
+          placeholder="Digite o nome completo do técnico">
+        
+        @if (tecnicosForm.controls['nome']?.invalid && tecnicosForm.controls['nome']?.touched) {
+          <div class="error-message">
+            @if (tecnicosForm.controls['nome']?.errors?.['required']) {
+              <span>Nome é obrigatório</span>
+            }
+            @if (tecnicosForm.controls['nome']?.errors?.['minlength']) {
+              <span>Nome deve ter pelo menos 2 caracteres</span>
+            }
+          </div>
+        }
+      </div>
 
-  </form>
+      <!-- Campo Email -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email:</label>
+        <input 
+          type="email" 
+          id="email" 
+          [ngModel]="tecnico.email"
+          (ngModelChange)="atualizarEmail($event)"
+          name="email" 
+          required
+          email
+          class="form-control"
+          placeholder="exemplo@email.com">
+        
+        @if (tecnicosForm.controls['email']?.invalid && tecnicosForm.controls['email']?.touched) {
+          <div class="error-message">
+            @if (tecnicosForm.controls['email']?.errors?.['required']) {
+              <span>Email é obrigatório</span>
+            }
+            @if (tecnicosForm.controls['email']?.errors?.['email']) {
+              <span>Digite um email válido</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Campo Telefone -->
+      <div class="form-group">
+        <label for="telefone" class="form-label">Telefone:</label>
+        <input 
+          type="tel" 
+          id="telefone" 
+          [ngModel]="tecnico.telefone"
+          (ngModelChange)="atualizarTelefone($event)"
+          name="telefone" 
+          required
+          pattern="[0-9()\\-\\s]+"
+          class="form-control"
+          placeholder="11999999999">
+        
+        @if (tecnicosForm.controls['telefone']?.invalid && tecnicosForm.controls['telefone']?.touched) {
+          <div class="error-message">
+            @if (tecnicosForm.controls['telefone']?.errors?.['required']) {
+              <span>Telefone é obrigatório</span>
+            }
+            @if (tecnicosForm.controls['telefone']?.errors?.['pattern']) {
+              <span>Digite um telefone válido</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Campo Especialidade -->
+      <div class="form-group">
+        <label for="especialidade" class="form-label">Especialidade:</label>
+        <textarea 
+          id="especialidade" 
+          [ngModel]="tecnico.especialidade"
+          (ngModelChange)="atualizarEspecialidade($event)"
+          name="especialidade" 
+          required
+          minlength="3"
+          class="form-control"
+          placeholder="Digite a especialidade completa!"
+          rows="2"></textarea>
+        
+        @if (tecnicosForm.controls['especialidade']?.invalid && tecnicosForm.controls['especialidade']?.touched) {
+          <div class="error-message">
+            @if (tecnicosForm.controls['especialidade']?.errors?.['required']) {
+              <span>Especialidade é obrigatória!</span>
+            }
+            @if (tecnicosForm.controls['especialidade']?.errors?.['minlength']) {
+              <span>Especialidade deve ter pelo menos 3 caracteres</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Informações de Read-only para Edição -->
+      @if (isEditando()) {
+        <div class="readonly-info">
+          <div class="info-item">
+            <strong>ID:</strong> {{ tecnico.id }}
+          </div>
+          <div class="info-item">
+            <strong>Data de Contratação:</strong> {{ tecnico.dataContratacao | date:'dd/MM/yyyy HH:mm' }}
+          </div>
+        </div>
+      }
+
+      <!-- Ações do Formulário -->
+      <div class="form-actions">
+        <button 
+          type="submit" 
+          class="btn btn-primary"
+          [disabled]="tecnicosForm.invalid">
+           {{ isEditando() ? 'Atualizar técnico' : 'Cadastrar técnico' }}
+        </button>
+        
+        <button 
+          type="button" 
+          class="btn btn-secondary" 
+          (click)="cancelar()"> 
+          Cancelar
+        </button>
+      </div>
+
+    </form>
+  
 </div>

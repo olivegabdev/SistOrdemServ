@@ -23,12 +23,13 @@ export class ClientesFormComponent implements OnInit {
   };
 
   isEditando = signal(false);
+  showAlert = signal(false);
+  alertMessage = signal('');
+  alertType = signal('success');
 
-  constructor(
-    private clienteService: ClienteService,
-    public router: Router,
-    private route: ActivatedRoute
-  ) {}
+  private clienteService = inject(ClienteService);
+  private router = inject(Router);
+  private route = inject(ActivatedRoute);
 
   ngOnInit(): void {
     const id = this.route.snapshot.params['id'];
@@ -65,11 +66,39 @@ atualizarEndereco(endereco: string): void {
 }
 
   salvarCliente(): void {
-    if (this.isEditando()) {
-      this.clienteService.updateCliente(this.cliente);
-    } else {
-      const { nome, email, telefone, endereco } = this.cliente;
-      this.clienteService.addCliente({ nome, email, telefone, endereco });
+    try {
+      if (this.isEditando()) {
+          this.clienteService.updateCliente(this.cliente);
+        } else {
+          const { nome, email, telefone, endereco } = this.cliente;
+          this.clienteService.addCliente({ nome, email, telefone, endereco });
+          this.mostrarAlert('Cliente cadastrado com sucesso!', 'success');
+        }
+
+        setTimeout(() => {
+          this.router.navigate(['/clientes']);
+        }, 2500);
+    } catch (error) {
+      this.mostrarAlert('Erro ao salvar o cliente. Tente novamente.', 'error');
     }
   }
+
+  private mostrarAlert(message: string, type: 'success' | 'error' | 'warning'): void {
+    this.alertMessage.set(message);
+    this.alertType.set(type);
+    this.showAlert.set(true);
+
+    setTimeout(() => {
+      this.showAlert.set(false);
+    }, 5000);
+  }
+
+  fecharAlert(): void {
+    this.showAlert.set(false);
+  }
+
+  cancelar(): void {
+    this.router.navigate(['/clientes']);
+  }
+
 }

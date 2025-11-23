@@ -10,7 +10,7 @@ export class TecnicoService {
 
     { id: 1, nome: 'Carlos Eduardo', 
       email: 'carlos.eduardo@email.com',
-      telefone: '(85) 91234-5678',
+      telefone: '85912345678',
       especialidade: 'Eletrônica',
       disponivel: true,
       dataContratacao: new Date() 
@@ -18,7 +18,7 @@ export class TecnicoService {
     {
       id: 2, nome: 'Ana Paula', 
       email: 'ana.paula@email.com',
-      telefone: '(85) 99876-5432',
+      telefone: '85998765432',
       especialidade: 'Mecânica',
       disponivel: false,
       dataContratacao: new Date()
@@ -26,7 +26,7 @@ export class TecnicoService {
     {
       id: 3, nome: 'Rafael Silva',
       email: 'rafael.silva@email.com',
-      telefone: '(85) 93456-7890',
+      telefone: '85934567890',
       especialidade: 'Informática',
       disponivel: true,
       dataContratacao: new Date()
@@ -40,6 +40,16 @@ export class TecnicoService {
   
   //MÉTODOS
   
+  atualizarDisponibilidade(id: number, disponivel: boolean): void {
+    this.tecnicosSignal.update(tecnicos => 
+      tecnicos.map(t =>
+        t.id === id ? { ...t, disponivel } : t
+      )
+    );
+  }
+
+  
+
   //buscar todos os técnicos
   getTecnicos() {
     return this.tecnicos;
@@ -91,6 +101,17 @@ export class TecnicoService {
     return computed(() => 
       this.tecnicos().filter(t => t.disponivel)
     );
+  }
+
+  getTecnicosIndisponiveis() {
+    return computed(() => 
+      this.tecnicos().filter(t => !t.disponivel)
+    );
+  }
+
+  isTecnicoDisponivel(id: number): boolean {
+    const tecnico = this.getTecnicoById(id)();
+    return tecnico ? tecnico.disponivel : false;
   }
 
   getTecnicosPorEspecialidade(especialidade: string) {

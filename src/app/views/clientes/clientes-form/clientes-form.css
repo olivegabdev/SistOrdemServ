@@ -165,13 +165,13 @@
 
 /* ===== CAMPOS DE FORMULÁRIO ===== */
 .form-control {
-  width: 100%;
+  width: 90%;
   padding: 1rem 1.25rem;
   border: 2px solid var(--form-border);
   border-radius: 8px;
   font-size: 1rem;
   font-family: inherit;
-  background: var(--form-bg);
+  background: white;
   transition: var(--form-transition);
   color: var(--form-text);
 }
@@ -195,12 +195,8 @@
 
 textarea.form-control {
   resize: vertical;
-  min-height: 50px;
+  min-height: 2rem;
   line-height: 1.5;
-}
-
-.form-group input {
-    background-color: var(--form-bg);
 }
 
 /* ===== MENSAGENS DE ERRO ===== */
@@ -294,7 +290,7 @@ textarea.form-control {
 
 .btn-primary {
   background: linear-gradient(135deg, var(--form-primary), var(--form-primary-dark));
-  color: white;
+  color: var(--form-text);
   box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
 }
 
@@ -501,4 +497,156 @@ textarea.form-control {
 @keyframes highlight {
   0% { background: rgba(52, 152, 219, 0.1); }
   100% { background: transparent; }
+}
+
+/* ===== ESTILOS DO ALERT ===== */
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.5rem;
+  border-radius: 10px;
+  margin-bottom: 2rem;
+  border-left: 4px solid;
+  animation: alertSlideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.alert::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: currentColor;
+  opacity: 0.3;
+}
+
+.alert-dismissible {
+  padding-right: 3rem;
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.alert-message {
+  font-weight: 500;
+  line-height: 1.5;
+}
+
+.alert-close {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  color: inherit;
+  opacity: 0.7;
+  flex-shrink: 0;
+}
+
+.alert-close:hover {
+  opacity: 1;
+  background: rgba(0, 0, 0, 0.1);
+  transform: scale(1.1);
+}
+
+/* Tipos de Alert */
+.alert-success {
+  background: linear-gradient(135deg, #d4edda, #c3e6cb);
+  border-color: #28a745;
+  color: #155724;
+}
+
+.alert-error {
+  background: linear-gradient(135deg, #f8d7da, #f1b0b7);
+  border-color: #dc3545;
+  color: #721c24;
+}
+
+.alert-warning {
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border-color: #ffc107;
+  color: #856404;
+}
+
+/* Animações do Alert */
+@keyframes alertSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes alertProgress {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
+}
+
+.alert.progress::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: currentColor;
+  animation: alertProgress 5s linear forwards;
+}
+
+/* Efeito de pulso para alertas importantes */
+.alert-pulse {
+  animation: alertPulse 2s infinite;
+}
+
+@keyframes alertPulse {
+  0%, 100% {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2), 0 0 0 2px rgba(220, 53, 69, 0.1);
+  }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .alert {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .alert-content {
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .alert-close {
+    align-self: flex-end;
+    margin-top: -0.5rem;
+    margin-right: -0.5rem;
+  }
 }

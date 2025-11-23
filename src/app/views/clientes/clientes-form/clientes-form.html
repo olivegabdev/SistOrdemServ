@@ -4,12 +4,18 @@
     <p class="form=subtitle">{{ isEditando() ? 'Atualize as informações do cliente' : 'Cadastre um novo cliente no sistema' }}</p>
   </div>
   
-  
-
   <nav class="back-link-container">
     <a routerLink="/clientes" class="back-link">Voltar para a Lista de Clientes</a>
   </nav>
   
+  @if (showAlert()) {
+    <div class="alert alert-{{alertType()}} alert-dismissible">
+      <div class="alert-content">
+        <span class="alert-message">{{ alertMessage() }}</span>
+      </div>
+      <button type="button" class="alert-close" (click)="fecharAlert()">x</button>
+    </div>
+  }
 
   <form (ngSubmit)="salvarCliente()" #clienteForm="ngForm" class="client-form">
     
@@ -66,7 +72,7 @@
     </div>
 
     <!-- Campo Telefone -->
-    <div class="form-group" class="form-label">
+    <div class="form-group">
       <label for="telefone" class="form-label">Telefone:</label>
       <input 
         type="tel" 
@@ -77,7 +83,7 @@
         required
         pattern="[0-9()\\-\\s]+"
         class="form-control"
-        placeholder="(11) 99999-9999">
+        placeholder="11999999999">
       
       @if (clienteForm.controls['telefone']?.invalid && clienteForm.controls['telefone']?.touched) {
         <div class="error-message">
@@ -135,16 +141,17 @@
         type="submit" 
         class="btn btn-primary"
         [disabled]="clienteForm.invalid">
-        💾 {{ isEditando() ? 'Atualizar Cliente' : 'Cadastrar Cliente' }}
+         {{ isEditando() ? 'Atualizar Cliente' : 'Cadastrar Cliente' }}
       </button>
       
       <button 
         type="button" 
         class="btn btn-secondary" 
-        (click)="router.navigate(['/clientes'])">
-        ❌ Cancelar
+        (click)="cancelar()">
+         Cancelar
       </button>
-    </div>
 
+      
+    </div>
   </form>
 </div>

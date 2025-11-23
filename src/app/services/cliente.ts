@@ -10,14 +10,14 @@ export class ClienteService {
 
     { id: 1, nome: 'Jean Giancomo', 
       email: 'jean.salai@gmail.com', 
-      telefone: '(85) 91480-1524', 
+      telefone: '85914801524', 
       endereco: 'Rua Leonardo da Vinci, 1504', 
       dataCadastro: new Date() 
     },
 
     { id: 2, nome: 'Mariana Macedo', 
       email: 'mari02macedo@outlook.com', 
-      telefone: '(85) 98615-7826', 
+      telefone: '85986157826', 
       endereco: 'Av. B, 456', 
       dataCadastro: new Date() 
     }
