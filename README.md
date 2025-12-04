@@ -1,59 +1,111 @@
-# SisOrdemServ
+# SisOrdemServ - Sistema de Ordens de Serviço
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.11.
+# Sobre o Projeto
 
-## Development server
+O Sistema de Ordens de Serviço é uma aplicação web para gerenciamento de ordens de serviço, desenvolvido como trabalho acadêmico (NP2) para demonstrar o uso de padrões de projeto e arquiteturais.
 
-To start a local development server, run:
+# Funcionalidades Principais
 
-```bash
-ng serve
-```
+ - Gestão de clientes: Cadastro, edição e listagem
+ - Gestão de Técnicos: Cadastro com controle de disponibilidade
+ - Gestão de Chamados: Abertura, atribuição e acompanhamento de status (aberto, em andamento e finalizado)
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+# Padrão Arquitetural: MVVM (Model-View-ViewModel)
+O sistema é baseado na arquitetura MVVM com Angular 20, proporcionando: 
 
-## Code scaffolding
+    - Separação clara de responsabilidades
+    - Data binding automático com Signals
+    - Standalone Components para modularidade 
+    - Serviços como ViewModels para lógica de negócio
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-```bash
-ng generate component component-name
-```
+# Estrutura de Pastas
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+src/app/
+    |- models/ (interfaces e tipos typescript)
+    |- services/ (lógica de negócio)
+    |- views/ (componentes de páginas)
+    |   |- chamados/ (módulo de chamados)
+    |   |- clientes/ (módulo de clientes)
+    |   |- tecnicos/ (módulo de técnicos) 
 
-```bash
-ng generate --help
-```
+# Padrões de Projeto Implementados
 
-## Building
+ - Factory Method (Padrão criacional)
+    Localização: /services
 
-To build the project run:
+    Exemplo em ClienteService: 
+    //private generateId(): number {
+    //const clientes = this.clientesSignal();
+    //return Math.max(...clientes.map(c => c.id), 0) + 1;
+    //}
 
-```bash
-ng build
-```
+ - Repository Pattern (Padrão estrutural)
+    Localização: /services
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+    Exemplo em TecnicoService:
+    //@Injectable()
+    //export class TecnicoService {
+    //getTecnicos(): { ... }
+    //getTecnicoById(id: number): { ... }
+    //addTecnicos(tecnico: Tecnico): void { ... }
+    //}
 
-## Running unit tests
+ - Observer Pattern (Padrão comportamental)
+    Localização: Implementado com Angular Signals
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+    Exemplo:
+    //private clientesSignal = signal<Cliente[]>([]);
+    //clientes = computed(() => this.clientesSignal());
 
-```bash
-ng test
-```
+# Decisões de Design Arquitetural
 
-## Running end-to-end tests
+ - Escolha do Angular 20:
+        - Suporte nativo a Signals e Standalone Components.
+        - Código mais limpo e performance otimizada.
 
-For end-to-end (e2e) testing, run:
+ - Implementação de Signals:
+        - Substituir Observables para estados simples.
 
-```bash
-ng e2e
-```
+ - Componentes Standalone: 
+        - Simplificar estrutura de módulos.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+# Tecnologias Utilizadas
 
-## Additional Resources
+ - Frontend: 
+        - Angular 20: Framework principal
+        - Typescript
+        - Angular Signals: Gerenciamento de estado 
+        - Angular Router: Navegação SPA
+        - CSS3
+    
+ - Ferramentas de desenvolvimento: 
+        - Angular CLI 
+        - Node.js & npm
+        - Git
+        - VS Code
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# Instalação e Execução 
+ - Pré-requisitos: 
+        - Node.js 18+ [Download](https://nodejs.org/pt)
+        - npm 9+ ou yarn
+        - Angular CLI 18+
+
+ - Passo a passo: 
+    1. Clone o repositório (git clone https://github.com/olivegabdev/SistOrdemServ)
+    2. Instale as dependências (npm install)
+    3. Execute o servidor de desenvolvimento (ng serve)
+    4. Acesse a aplicação (https://localhost:4200)
+
+# Equipe e Contribuições
+
+    - Gabrielle Oliveira: Arquitetura, Padrões de Projeto
+    - Laura Oliveira: Documentação
+    - Monalisa Araújo: Frontend
+
+<div align="center">
+    Desenvolvido para a Disciplina de Métodos Avançados de Programação 
+
+    - Entrega: NP2 - 2025
+    - Professor: Leandro Taddeo
+</div>

@@ -280,8 +280,8 @@ textarea.form-control {
 }
 
 .btn-primary {
-  background: var(--form-primary);
-  color: white;
+  background: #27ae60;
+  color: black;
 }
 
 .btn-primary:hover:not(:disabled) {
