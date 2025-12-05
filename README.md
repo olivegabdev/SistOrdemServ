@@ -21,13 +21,13 @@ O sistema é baseado na arquitetura MVVM com Angular 20, proporcionando:
 
 # Estrutura de Pastas
 
-src/app/
-    |- models/ (interfaces e tipos typescript)
-    |- services/ (lógica de negócio)
-    |- views/ (componentes de páginas)
-    |   |- chamados/ (módulo de chamados)
-    |   |- clientes/ (módulo de clientes)
-    |   |- tecnicos/ (módulo de técnicos) 
+src/app/  
+    |- models/ (interfaces e tipos typescript)  
+    |- services/ (lógica de negócio)  
+    |- views/ (componentes de páginas)  
+    |   |- chamados/ (módulo de chamados)  
+    |   |- clientes/ (módulo de clientes)  
+    |   |- tecnicos/ (módulo de técnicos)   
 
 # Padrões de Projeto Implementados
 
@@ -35,77 +35,99 @@ src/app/
     Localização: /services
 
     Exemplo em ClienteService: 
-    //private generateId(): number {
-    //const clientes = this.clientesSignal();
-    //return Math.max(...clientes.map(c => c.id), 0) + 1;
-    //}
+    ```
+    private generateId(): number {
+    const clientes = this.clientesSignal();
+    return Math.max(...clientes.map(c => c.id), 0) + 1;
+    }
+    
+    ```
 
  - Repository Pattern (Padrão estrutural)
     Localização: /services
 
     Exemplo em TecnicoService:
-    //@Injectable()
-    //export class TecnicoService {
-    //getTecnicos(): { ... }
-    //getTecnicoById(id: number): { ... }
-    //addTecnicos(tecnico: Tecnico): void { ... }
-    //}
+   ```
+    @Injectable()
+    export class TecnicoService {
+    getTecnicos(): { ... }
+    getTecnicoById(id: number): { ... }
+    addTecnicos(tecnico: Tecnico): void { ... }
+    }
+   
+   ```
 
  - Observer Pattern (Padrão comportamental)
     Localização: Implementado com Angular Signals
 
     Exemplo:
-    //private clientesSignal = signal<Cliente[]>([]);
-    //clientes = computed(() => this.clientesSignal());
+   ```
+    private clientesSignal = signal<Cliente[]>([]);
+    clientes = computed(() => this.clientesSignal());
+   
+   ```
 
 # Decisões de Design Arquitetural
 
- - Escolha do Angular 20:
-        - Suporte nativo a Signals e Standalone Components.
+ - Escolha do Angular 20:  
+        - Suporte nativo a Signals e Standalone Components.  
         - Código mais limpo e performance otimizada.
 
- - Implementação de Signals:
+ - Implementação de Signals:  
         - Substituir Observables para estados simples.
 
- - Componentes Standalone: 
+ - Componentes Standalone:   
         - Simplificar estrutura de módulos.
 
 # Tecnologias Utilizadas
 
- - Frontend: 
-        - Angular 20: Framework principal
-        - Typescript
-        - Angular Signals: Gerenciamento de estado 
-        - Angular Router: Navegação SPA
-        - CSS3
+ - Frontend:   
+        - Angular 20: Framework principal  
+        - Typescript  
+        - Angular Signals: Gerenciamento de estado   
+        - Angular Router: Navegação SPA  
+        - CSS3  
     
  - Ferramentas de desenvolvimento: 
-        - Angular CLI 
-        - Node.js & npm
-        - Git
-        - VS Code
+        - Angular CLI   
+        - Node.js & npm  
+        - Git  
+        - VS Code  
 
 # Instalação e Execução 
- - Pré-requisitos: 
-        - Node.js 18+ [Download](https://nodejs.org/pt)
-        - npm 9+ ou yarn
-        - Angular CLI 18+
+
+- Pré-requisitos: 
+   - Node.js 18+ [Download](https://nodejs.org/pt)
+   - npm 9+ ou yarn
+   - Angular CLI 18+
 
  - Passo a passo: 
-    1. Clone o repositório (git clone https://github.com/olivegabdev/SistOrdemServ)
-    2. Instale as dependências (npm install)
-    3. Execute o servidor de desenvolvimento (ng serve)
+    1. Clone o repositório    
+       ```
+       git clone https://github.com/olivegabdev/SistOrdemServ
+        ```
+    2. Instale as dependências  
+        ```
+         npm install
+        ```
+    3. Execute o servidor de desenvolvimento
+        ```
+         ng serve
+        ```
     4. Acesse a aplicação (https://localhost:4200)
 
 # Equipe e Contribuições
 
-    - Gabrielle Oliveira: Arquitetura, Padrões de Projeto
-    - Laura Oliveira: Documentação
-    - Monalisa Araújo: Frontend
-
 <div align="center">
-    Desenvolvido para a Disciplina de Métodos Avançados de Programação 
 
-    - Entrega: NP2 - 2025
-    - Professor: Leandro Taddeo
+  |  Pessoa  | Função |
+  |:--------:|:------:|
+  | Gabrielle Oliveira | Arquitetura, Padrões de Projeto |
+  | Laura Oliveira | Documentação |
+  | Monalisa Araújo| Frontend |
+
+
+    Desenvolvido para a Disciplina de Métodos Avançados de Programação   
+    Entrega: NP2 - 2025    
+    Professor: Leandro Taddeo
 </div>
